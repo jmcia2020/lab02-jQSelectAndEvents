@@ -1,0 +1,24 @@
+main{
+    margin-bottom: 30px;
+}
+section {
+    float: left;
+    margin: 80px;
+  }
+  
+  img {
+    height: 200px;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  #photo-template {
+    display:block;
+  }
+
+  footer{
+      clear: both;
+      position: absolute;
+  }
