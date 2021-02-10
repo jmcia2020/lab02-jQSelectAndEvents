@@ -1,29 +1,29 @@
-//this code by Nathan Hall
 /* eslint-disable no-trailing-spaces */
 'use strict';
 const creatures = [];
-function Creature (image_url, title, description, keyword, horns, selected){
+function Creature (image_url, title, description, keyword, horns){
   this.image_url = image_url;
   this.title = title;
   this.description = description;
   this.keyword = keyword;
   this.horns = horns;
-  this.selectorTool = selected; 
 }
 
 Creature.prototype.render = function(){
-  const $template = $('#photo-template').clone().contents();
-  const $h2 =$template.find('h2');
-  const $image_url = $template.find('img');
-  const $p = $template.find('p');
+  const template = $('#photo-template').clone().contents();
+  template.attr('id', 'photo-template-new');
+  template.attr('class', this.keyword);
+  const h2 =template.find('h2');
+  const image_url = template.find('img');
+  const p = template.find('p');
 
   //Populate the elements
-  $h2.text(this.title);
-  $image_url.attr('src', this.image_url);
-  $p.text(this.description);
+  h2.text(this.title);
+  image_url.attr('src', this.image_url);
+  p.text(this.description);
 
   // Add to the page
-  $('main').append($template);
+  $('main').append(template);
 };
 
 //json part of demo
@@ -31,7 +31,6 @@ Creature.prototype.render = function(){
 //retrieving data from an outside source USE for lab
 
 $.ajax('/data/page-1.json').then(creaturesJSON => {
-  console.log(creaturesJSON);
   creaturesJSON.forEach(properties => {
     const creature = new Creature(
       properties.image_url,
@@ -41,18 +40,15 @@ $.ajax('/data/page-1.json').then(creaturesJSON => {
       properties.horns);
     addSelect(creature.keyword);
     creatures.push(creature);
-    console.log(creature);
   });
   for (const creature of creatures) {
-    console.log(creature.title);
     creature.render();
   }
 });
 
 
 function addSelect(filter) {
-  // eslint-disable-next-line indent
- const selectElement = $('select');  
+  const selectElement = $('select');  
   const option = $('<option></option>').text(filter);
   let existance=false;
   selectElement.children().each(function(){
@@ -66,27 +62,19 @@ function addSelect(filter) {
   selectElement.append(option);
 }
 
-// function updatePage(){
-
-// }
-
 document.getElementById('keywordSelect').addEventListener('change',updatePage);
+
 function updatePage(){
-  const $selected = $('#keywordSelect option:selected').text();
-  console.log($selected);
-  for (const creature of creatures) {
-    console.log(creature.keyword);
-    if (creature.keyword !== $selected){
-      creature.selectorTool.hide();
-    }else{
-      creature.selectorTool.show();
+  const selectedKeyword = $('#keywordSelect option:selected').text();
+  var elements = $('[id="photo-template-new"]');
+  for( const element of elements){
+    if ( $(element).hasClass(selectedKeyword)){
+      $(element).show();
+    }
+    else{
+      $(element).hide();
     }
   }
 }
-
-
-
-
-// const selectorTool = $("select option:selected").text();
 
 
