@@ -9,22 +9,38 @@ function Creature (image_url, title, description, keyword, horns){
   this.horns = horns;
 }
 
+// Creature.prototype.render = function(){
+//   const template = $('#photo-template').clone().contents();
+//   template.attr('id', 'photo-template-new');
+//   template.attr('class', this.keyword);
+//   const h2 =template.find('h2');
+//   const image_url = template.find('img');
+//   const p = template.find('p');
+// };
+
 Creature.prototype.render = function(){
-  const template = $('#photo-template').clone().contents();
-  template.attr('id', 'photo-template-new');
-  template.attr('class', this.keyword);
-  const h2 =template.find('h2');
-  const image_url = template.find('img');
-  const p = template.find('p');
+  const photoTemplate = document.getElementById('photo-template').innerHTML;
+  const renderedHTML = Mustache.render(photoTemplate,{title: this.title, image_url: this.image_url, description: this.description, keyword: this.keyword, horns: this.horns}) 
+  $('main').append(renderedHTML);
 
-  //Populate the elements
-  h2.text(this.title);
-  image_url.attr('src', this.image_url);
-  p.text(this.description);
-
-  // Add to the page
-  $('main').append(template);
+  console.log(renderedHTML);
 };
+
+// const template = $('#photo-template').clone().contents();
+// template.attr('id', 'photo-template-new');
+// template.attr('class', this.keyword);
+// const h2 =template.find('h2');
+// const image_url = template.find('img');
+// const p = template.find('p');
+
+// //Populate the elements
+// h2.text(this.title);
+// image_url.attr('src', this.image_url);
+// p.text(this.description);
+
+// Add to the page
+// $('main').append(template);
+
 
 //json part of demo
 
